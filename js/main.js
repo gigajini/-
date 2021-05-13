@@ -9,6 +9,7 @@ let checkInterval;
 let words = [];
 
 
+
 const wordInput = document.querySelector('.word-input')
 //클래스가 word-input인 태그(이하 검색창)를 상수로 지정
 const wordDisplay = document.querySelector('.word-display')
@@ -21,17 +22,16 @@ const button = document.querySelector('.button')
 
 
 
+
 // 사용하는 변수들을 화면에 렌더링됬을 때 선언하기 위해 만드는것 (뭔말인지 모르겠음)
 
-init(); {} //뭔지 모름
+init(); // init 함수를 호출한다
 
 function init() {
-    buttonChange('게임로딩중...')
-    getWords();
-    wordInput.addEventListener('input' , checkMatch) //뭔지 모름
+    // setTimeout(() => buttonChange('게임로딩중...') , 3000);    //3초뒤에 '게임로딩중...' 버튼으로 바뀐다.
+    getWords(); //getwords함수 호출
+    wordInput.addEventListener('input' , checkMatch) // 이벤트 생성 : wordInput에 값을 입력할 때(input) checkMatch 함수가 실행된다.
 }
-
-
 
 
 // * 게임 실행 *
@@ -43,7 +43,7 @@ function run() {
     time = GAME_TIME;
     wordInput.focus();
     scoreDisplay.innerText = 0;
-    timeInterval = setInterval(countDown,1000); //모르는거
+    timeInterval = setInterval(countDown,1000); //주기적으로 10초 카운터를 한다
     checkInterval = setInterval(checkStatus,50)  //50초동안 계속 상태를 체크
     buttonChange('게임중')
 }
@@ -54,14 +54,15 @@ function run() {
 function checkStatus(){
     if(!isPlaying && time === 0){
         buttonChange('게임시작')
-        clearInterval(checkInterval)
+        clearInterval(checkInterval) //checkInterval 을 초기화
     }
 }
 
 
 // * 단어 불러오기 *
 function getWords() {
-    // axios 코드
+    
+    //  * axios 코드 *
     axios.get('https://random-word-api.herokuapp.com/word?number=100')
   .then(function (response) {
     // handle success
@@ -74,9 +75,9 @@ function getWords() {
   .then(function () {
     // always executed
   });
-
-       
+    
 }
+
 
 
 // * 단어일치 체크 *
@@ -89,7 +90,8 @@ function checkMatch () {
         score++;   
         scoreDisplay.innerText = score;
         time = GAME_TIME;
-        const randomIndex = Math.floor(Math.ramdom() *words.length); //랜덤한 숫자 발생
+        const randomIndex = Math.floor(Math.random() * words.length); //랜덤한 숫자 발생
+        console.log(randomIndex);
         wordDisplay.innerHTML = words[randomIndex]  //발생한 랜덤숫자와 같은 인덱스 번호를 가진 단어가 도출
         
        }
@@ -122,4 +124,6 @@ function buttonChange(text) {
     text === '게임시작' ? button.classList.remove('loading') : button.classList.add('loading')
     //버튼 글자가 '게임시작'이면 css의 .loading을 삭제하고, 그렇지 않으면 추가해라. 
 }
+
+buttonChange('게임시작');
 
