@@ -62,19 +62,21 @@ function checkStatus(){
 // * 단어 불러오기 *
 function getWords() {
     
-    //  * axios 코드 *
     axios.get('https://random-word-api.herokuapp.com/word?number=100')
-  .then(function (response) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .then(function () {
-    // always executed
-  });
+    .then(function (response) {
+
+        response.data.forEach((word)=>{
+            if(word.length < 10){
+                words.push(word);
+            }
+        })
+        buttonChange('게임시작'); 
+        console.log(words);
+    })
+    .catch(function (error) {
+// handle error
+        console.log(error); 
+}); 
     
 }
 
